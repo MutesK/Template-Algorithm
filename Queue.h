@@ -12,7 +12,21 @@ private:
 	int rear;
 
 	T Data[DATAMAX];
-
+	int NextPosIdx(int* pos)
+	{
+		if (*pos == DATAMAX - 1)
+			return 0;
+		else
+			*pos = (*pos + 1) % DATAMAX;
+		return true;
+	}
+	bool Peek(T *out)
+	{
+		if (front == rear)
+			return true;
+		
+		*out = NextPosIdx(front);
+	}
 public:
 	CQueue();
 	
@@ -46,7 +60,6 @@ bool CQueue<T>::Dequeue(T *pData)
 	if (front != rear)
 	{
 		*pData = Data[front];
-		Data[front] = 0;
 		front = (front + 1) % DATAMAX;
 
 		return true;
@@ -59,7 +72,9 @@ int CQueue<T>::getSize()
 {
 	if (front < rear)
 		return rear - front;
-	else
+	else if (rear + 1 % DATAMAX == front)
+		return DATAMAX;
+	else 
 		return (DATAMAX - front) + rear - 1;
 }
 
@@ -73,13 +88,17 @@ int CQueue<T>::freeSize()
 template <class T>
 bool CQueue<T>::Peek(T *out, int pos)
 {
-	int tFront = front;
-
-	tFront = (tFront + pos - 1) % DATAMAX;
-	if (tFront != rear)
+	if (front != rear)
 	{
-		*out = Data[tFront];
-		return true;
+		int tFront = front;
+
+		tFront = (tFront + pos) % DATAMAX;
+
+		if (tFront != rear)
+		{
+			*out = Data[tFront];
+			return true;
+		}
 	}
 	return false;
 }
