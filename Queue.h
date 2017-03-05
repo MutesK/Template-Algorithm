@@ -24,12 +24,12 @@ private:
 	{
 		if (front == rear)
 			return true;
-		
+
 		*out = NextPosIdx(front);
 	}
 public:
 	CQueue();
-	
+
 	bool Dequeue(T *pData);
 	void Enqueue(T data);
 	int getSize();
@@ -71,18 +71,18 @@ template <class T>
 int CQueue<T>::getSize()
 {
 	if (front < rear)
-		return rear - front;
-	else if (rear + 1 % DATAMAX == front)
-		return DATAMAX;
-	else 
-		return (DATAMAX - front) + rear - 1;
+		return rear - front + 1;
+	else if ((rear + 1) % DATAMAX == front)
+		return DATAMAX - 1;
+	else
+		return (DATAMAX - ((DATAMAX - front) + (rear + 1)));
 }
 
 
 template <class T>
 int CQueue<T>::freeSize()
 {
-	return DATAMAX - getSize() - 1;
+	return (DATAMAX - 1) - getSize();
 }
 
 template <class T>
